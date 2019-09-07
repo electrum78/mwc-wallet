@@ -74,7 +74,7 @@ fn owner_v2_sanity() -> Result<(), grin_wallet_controller::Error> {
 	let res = send_request(1, "http://127.0.0.1:3420/v2/owner", req)?;
 	assert!(res.is_ok());
 	let value: RetrieveSummaryInfoResp = res.unwrap();
-	assert_eq!(value.1.amount_currently_spendable, 420000000000);
+	assert_eq!(value.1.amount_currently_spendable, 16666666660);
 	println!("Response 1: {:?}", value);
 
 	// 2) Send to wallet 2 foreign listener
@@ -85,7 +85,7 @@ fn owner_v2_sanity() -> Result<(), grin_wallet_controller::Error> {
 		"send",
 		"-d",
 		"http://127.0.0.1:23415",
-		"10",
+		"1",
 	];
 	let yml = load_yaml!("../src/bin/grin-wallet.yml");
 	let app = App::from_yaml(yml);

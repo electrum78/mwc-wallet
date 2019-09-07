@@ -85,7 +85,7 @@ fn check_repair_impl(test_dir: &'static str) -> Result<(), libwallet::Error> {
 	});
 
 	// few values to keep things shorter
-	let reward = core::consensus::REWARD;
+	let reward = core::consensus::MWC_FIRST_GROUP_REWARD;
 	let cm = global::coinbase_maturity() as u64; // assume all testing precedes soft fork height
 
 	// add some accounts
@@ -363,12 +363,12 @@ fn two_wallets_one_seed_impl(test_dir: &'static str) -> Result<(), libwallet::Er
 	});
 
 	// few values to keep things shorter
-	let _reward = core::consensus::REWARD;
+	let _reward = core::consensus::MWC_FIRST_GROUP_REWARD;
 	let cm = global::coinbase_maturity() as usize; // assume all testing precedes soft fork height
 
 	// Do some mining
 	let mut bh = 20u64;
-	let base_amount = consensus::GRIN_BASE;
+	let base_amount = consensus::MILLI_GRIN;
 	let _ = test_framework::award_blocks_to_wallet(
 		&chain,
 		miner.clone(),

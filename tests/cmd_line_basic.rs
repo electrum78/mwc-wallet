@@ -179,7 +179,7 @@ fn command_line_test_impl(test_dir: &str) -> Result<(), grin_wallet_controller::
 		&file_name,
 		"-g",
 		very_long_message,
-		"10",
+		"1",
 	];
 	execute_command(&app, test_dir, "wallet1", &client1, arg_vec)?;
 
@@ -243,7 +243,7 @@ fn command_line_test_impl(test_dir: &str) -> Result<(), grin_wallet_controller::
 		api.set_active_account(m, "account_1")?;
 		let (_, wallet1_info) = api.retrieve_summary_info(m, true, 1)?;
 		assert_eq!(wallet1_info.last_confirmed_height, bh);
-		assert_eq!(wallet1_info.amount_currently_spendable, 10_000_000_000);
+		assert_eq!(wallet1_info.amount_currently_spendable, 1_000_000_000);
 		Ok(())
 	})?;
 
@@ -263,7 +263,7 @@ fn command_line_test_impl(test_dir: &str) -> Result<(), grin_wallet_controller::
 		"Love, Yeast, Smallest",
 		"-s",
 		"smallest",
-		"10",
+		"1",
 	];
 	execute_command(&app, test_dir, "wallet1", &client1, arg_vec)?;
 
@@ -323,7 +323,7 @@ fn command_line_test_impl(test_dir: &str) -> Result<(), grin_wallet_controller::
 		"3",
 		"-s",
 		"smallest",
-		"10",
+		"1",
 	];
 	execute_command(&app, test_dir, "wallet1", &client1, arg_vec)?;
 	bh += 1;
@@ -355,7 +355,7 @@ fn command_line_test_impl(test_dir: &str) -> Result<(), grin_wallet_controller::
 		&file_name,
 		"-g",
 		"Ain't sending",
-		"10",
+		"1",
 	];
 	execute_command(&app, test_dir, "wallet1", &client1, arg_vec)?;
 
@@ -376,7 +376,7 @@ fn command_line_test_impl(test_dir: &str) -> Result<(), grin_wallet_controller::
 		&file_name,
 		"-g",
 		"Ain't sending 2",
-		"10",
+		"1",
 	];
 	execute_command(&app, test_dir, "wallet1", &client1, arg_vec)?;
 
@@ -403,7 +403,7 @@ fn command_line_test_impl(test_dir: &str) -> Result<(), grin_wallet_controller::
 		&file_name,
 		"-g",
 		"Please give me your precious grins. Love, Yeast",
-		"65",
+		"6",
 	];
 	execute_command(&app, test_dir, "wallet2", &client2, arg_vec)?;
 	let output_file_name = format!("{}/invoice.slate.paid", test_dir);
@@ -453,7 +453,7 @@ fn command_line_test_impl(test_dir: &str) -> Result<(), grin_wallet_controller::
 		"mining",
 		"txs",
 		"-i",
-		"10",
+		"1",
 	];
 	execute_command(&app, test_dir, "wallet1", &client1, arg_vec)?;
 

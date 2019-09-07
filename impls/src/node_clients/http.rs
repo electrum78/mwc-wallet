@@ -17,6 +17,7 @@
 
 use futures::{stream, Stream};
 
+use crate::core::global;
 use crate::libwallet::{NodeClient, NodeVersionInfo, TxWrapper};
 use std::collections::HashMap;
 use tokio::runtime::Runtime;
@@ -34,7 +35,7 @@ pub struct HTTPNodeClient {
 }
 
 impl HTTPNodeClient {
-	/// Create a new client that will communicate with the given grin node
+	/// Create a new client that will communicate with the given mwc node
 	pub fn new(node_url: &str, node_api_secret: Option<String>) -> HTTPNodeClient {
 		HTTPNodeClient {
 			node_url: node_url.to_owned(),
@@ -70,8 +71,17 @@ impl NodeClient for HTTPNodeClient {
 			return Some(v.clone());
 		}
 		let url = format!("{}/v1/version", self.node_url());
+
+		let chain_type = if global::is_main() {
+			global::ChainTypes::Mainnet
+		} else if global::is_floo() {
+			global::ChainTypes::Floonet
+		} else {
+			global::ChainTypes::UserTesting
+		};
+
 		let mut retval =
-			match api::client::get::<NodeVersionInfo>(url.as_str(), self.node_api_secret()) {
+			match api::client::get::<NodeVersionInfo>(url.as_str(), self.node_api_secret(), chain_type) {
 				Ok(n) => n,
 				Err(e) => {
 					// If node isn't available, allow offline functions
@@ -94,7 +104,7 @@ impl NodeClient for HTTPNodeClient {
 		Some(retval)
 	}
 
-	/// Posts a transaction to a grin node
+	/// Posts a transaction to a mwc node
 	fn post_tx(&self, tx: &TxWrapper, fluff: bool) -> Result<(), libwallet::Error> {
 		let url;
 		let dest = self.node_url();
@@ -103,7 +113,16 @@ impl NodeClient for HTTPNodeClient {
 		} else {
 			url = format!("{}/v1/pool/push_tx", dest);
 		}
-		let res = api::client::post_no_ret(url.as_str(), self.node_api_secret(), tx);
+
+		let chain_type = if global::is_main() {
+			global::ChainTypes::Mainnet
+		} else if global::is_floo() {
+			global::ChainTypes::Floonet
+		} else {
+			global::ChainTypes::UserTesting
+		};
+
+		let res = api::client::post_no_ret(url.as_str(), self.node_api_secret(), tx, chain_type);
 		if let Err(e) = res {
 			let report = format!("Posting transaction to node: {}", e);
 			error!("Post TX Error: {}", e);
@@ -116,7 +135,16 @@ impl NodeClient for HTTPNodeClient {
 	fn get_chain_height(&self) -> Result<u64, libwallet::Error> {
 		let addr = self.node_url();
 		let url = format!("{}/v1/chain", addr);
-		let res = api::client::get::<api::Tip>(url.as_str(), self.node_api_secret());
+
+		let chain_type = if global::is_main() {
+			global::ChainTypes::Mainnet
+		} else if global::is_floo() {
+			global::ChainTypes::Floonet
+		} else {
+			global::ChainTypes::UserTesting
+		};
+
+		let res = api::client::get::<api::Tip>(url.as_str(), self.node_api_secret(), chain_type);
 		match res {
 			Err(e) => {
 				let report = format!("Getting chain height from node: {}", e);
@@ -146,9 +174,19 @@ impl NodeClient for HTTPNodeClient {
 
 		for query_chunk in query_params.chunks(200) {
 			let url = format!("{}/v1/chain/outputs/byids?{}", addr, query_chunk.join("&"),);
+
+			let chain_type = if global::is_main() {
+				global::ChainTypes::Mainnet
+			} else if global::is_floo() {
+				global::ChainTypes::Floonet
+			} else {
+				global::ChainTypes::UserTesting
+			};
+
 			tasks.push(api::client::get_async::<Vec<api::Output>>(
 				url.as_str(),
 				self.node_api_secret(),
+				chain_type,
 			));
 		}
 
@@ -195,7 +233,15 @@ impl NodeClient for HTTPNodeClient {
 		let mut api_outputs: Vec<(pedersen::Commitment, pedersen::RangeProof, bool, u64, u64)> =
 			Vec::new();
 
-		match api::client::get::<api::OutputListing>(url.as_str(), self.node_api_secret()) {
+		let chain_type = if global::is_main() {
+			global::ChainTypes::Mainnet
+		} else if global::is_floo() {
+			global::ChainTypes::Floonet
+		} else {
+			global::ChainTypes::UserTesting
+		};
+
+		match api::client::get::<api::OutputListing>(url.as_str(), self.node_api_secret(), chain_type) {
 			Ok(o) => {
 				for out in o.outputs {
 					let is_coinbase = match out.output_type {
@@ -234,7 +280,7 @@ pub fn create_coinbase(dest: &str, block_fees: &BlockFees) -> Result<CbData, Err
 	match single_create_coinbase(&url, &block_fees) {
 		Err(e) => {
 			error!(
-				"Failed to get coinbase from {}. Run grin wallet listen?",
+				"Failed to get coinbase from {}. Run mwc wallet listen?",
 				url
 			);
 			error!("Underlying Error: {}", e.cause().unwrap());

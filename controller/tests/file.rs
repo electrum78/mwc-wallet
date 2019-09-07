@@ -72,7 +72,7 @@ fn file_exchange_test_impl(test_dir: &'static str) -> Result<(), libwallet::Erro
 	});
 
 	// few values to keep things shorter
-	let reward = core::consensus::REWARD;
+	let reward = core::consensus::MWC_FIRST_GROUP_REWARD;
 
 	// add some accounts
 	wallet::controller::owner_single_use(wallet1.clone(), mask1, |api, m| {

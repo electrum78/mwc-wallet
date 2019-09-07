@@ -13,6 +13,7 @@
 // limitations under the License.
 
 /// HTTP Wallet 'plugin' implementation
+use crate::core::global;
 use crate::api;
 use crate::libwallet::{Error, ErrorKind, Slate};
 use crate::SlateSender;
@@ -157,7 +158,16 @@ where
 	IN: Serialize,
 {
 	// TODO: change create_post_request to accept a url instead of a &str
-	let req = api::client::create_post_request(url.as_str(), api_secret, input)?;
+	let chain_type = if global::is_main() {
+		global::ChainTypes::Mainnet
+	} else if global::is_floo() {
+		global::ChainTypes::Floonet
+	} else {
+		global::ChainTypes::UserTesting
+	};
+
+
+	let req = api::client::create_post_request(url.as_str(), api_secret, input, chain_type)?;
 	let res = api::client::send_request(req)?;
 	Ok(res)
 }
