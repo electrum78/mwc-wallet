@@ -1376,12 +1376,7 @@ where
 	) -> Result<(), Error> {
 		let mut w_lock = self.wallet_inst.lock();
 		let lc = w_lock.lc_provider()?;
-		lc.create_config(
-			chain_type,
-			"mwc-wallet.toml",
-			wallet_config,
-			logging_config,
-		)
+		lc.create_config(chain_type, "mwc-wallet.toml", wallet_config, logging_config)
 	}
 
 	/// Creates a new wallet seed and empty wallet database in the `wallet_data` directory of
