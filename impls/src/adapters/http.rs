@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::api;
 /// HTTP Wallet 'plugin' implementation
 use crate::core::global;
-use crate::api;
 use crate::libwallet::{Error, ErrorKind, Slate};
 use crate::SlateSender;
 use serde::Serialize;
@@ -165,7 +165,6 @@ where
 	} else {
 		global::ChainTypes::UserTesting
 	};
-
 
 	let req = api::client::create_post_request(url.as_str(), api_secret, input, chain_type)?;
 	let res = api::client::send_request(req)?;

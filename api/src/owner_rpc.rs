@@ -159,7 +159,7 @@ pub trait OwnerRpc: Sync + Send {
 	/**
 	Networked version of [Owner::retrieve_summary_info](struct.Owner.html#method.retrieve_summary_info).
 
-        */
+		*/
 
 	fn retrieve_summary_info(
 		&self,

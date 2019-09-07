@@ -80,25 +80,28 @@ impl NodeClient for HTTPNodeClient {
 			global::ChainTypes::UserTesting
 		};
 
-		let mut retval =
-			match api::client::get::<NodeVersionInfo>(url.as_str(), self.node_api_secret(), chain_type) {
-				Ok(n) => n,
-				Err(e) => {
-					// If node isn't available, allow offline functions
-					// unfortunately have to parse string due to error structure
-					let err_string = format!("{}", e);
-					if err_string.contains("404") {
-						return Some(NodeVersionInfo {
-							node_version: "1.0.0".into(),
-							block_header_version: 1,
-							verified: Some(false),
-						});
-					} else {
-						error!("Unable to contact Node to get version info: {}", e);
-						return None;
-					}
+		let mut retval = match api::client::get::<NodeVersionInfo>(
+			url.as_str(),
+			self.node_api_secret(),
+			chain_type,
+		) {
+			Ok(n) => n,
+			Err(e) => {
+				// If node isn't available, allow offline functions
+				// unfortunately have to parse string due to error structure
+				let err_string = format!("{}", e);
+				if err_string.contains("404") {
+					return Some(NodeVersionInfo {
+						node_version: "1.0.0".into(),
+						block_header_version: 1,
+						verified: Some(false),
+					});
+				} else {
+					error!("Unable to contact Node to get version info: {}", e);
+					return None;
 				}
-			};
+			}
+		};
 		retval.verified = Some(true);
 		self.node_version_info = Some(retval.clone());
 		Some(retval)
@@ -241,7 +244,11 @@ impl NodeClient for HTTPNodeClient {
 			global::ChainTypes::UserTesting
 		};
 
-		match api::client::get::<api::OutputListing>(url.as_str(), self.node_api_secret(), chain_type) {
+		match api::client::get::<api::OutputListing>(
+			url.as_str(),
+			self.node_api_secret(),
+			chain_type,
+		) {
 			Ok(o) => {
 				for out in o.outputs {
 					let is_coinbase = match out.output_type {

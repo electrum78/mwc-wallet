@@ -295,7 +295,12 @@ where
 	IN: Serialize,
 {
 	// TODO: change create_post_request to accept a url instead of a &str
-	let req = api::client::create_post_request(url.as_str(), api_secret, input, global::ChainTypes::Mainnet)?;
+	let req = api::client::create_post_request(
+		url.as_str(),
+		api_secret,
+		input,
+		global::ChainTypes::Mainnet,
+	)?;
 	let res = api::client::send_request(req)?;
 	Ok(res)
 }
