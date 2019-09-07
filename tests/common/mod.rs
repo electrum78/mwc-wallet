@@ -127,10 +127,10 @@ pub fn config_command_wallet(
 	current_dir.push(wallet_name);
 	let _ = fs::create_dir_all(current_dir.clone());
 	let mut config_file_name = current_dir.clone();
-	config_file_name.push("grin-wallet.toml");
+	config_file_name.push("mwc-wallet.toml");
 	if config_file_name.exists() {
 		return Err(grin_wallet_controller::ErrorKind::ArgumentError(
-			"grin-wallet.toml already exists in the target directory. Please remove it first"
+			"mwc-wallet.toml already exists in the target directory. Please remove it first"
 				.to_owned(),
 		))?;
 	}
@@ -159,7 +159,7 @@ pub fn initial_setup_wallet(dir_name: &str, wallet_name: &str) -> WalletConfig {
 	current_dir.push(wallet_name);
 	let _ = fs::create_dir_all(current_dir.clone());
 	let mut config_file_name = current_dir.clone();
-	config_file_name.push("grin-wallet.toml");
+	config_file_name.push("mwc-wallet.toml");
 	GlobalWalletConfig::new(config_file_name.to_str().unwrap())
 		.unwrap()
 		.members
@@ -220,7 +220,7 @@ pub fn instantiate_wallet(
 			>,
 		>;
 	let lc = wallet.lc_provider().unwrap();
-	// legacy hack to avoid the need for changes in existing grin-wallet.toml files
+	// legacy hack to avoid the need for changes in existing mwc-wallet.toml files
 	// remove `wallet_data` from end of path as
 	// new lifecycle provider assumes grin_wallet.toml is in root of data directory
 	let mut top_level_wallet_dir = PathBuf::from(wallet_config.clone().data_file_dir);

@@ -1237,14 +1237,14 @@ where
 	// LIFECYCLE FUNCTIONS
 
 	/// Retrieve the top-level directory for the wallet. This directory should contain the
-	/// `grin-wallet.toml` file and the `wallet_data` directory that contains the wallet
+	/// `mwc-wallet.toml` file and the `wallet_data` directory that contains the wallet
 	/// seed + data files. Future versions of the wallet API will support multiple wallets
 	/// within the top level directory.
 	///
 	/// The top level directory defaults to (in order of precedence):
 	///
 	/// 1) The current directory, from which `grin-wallet` or the main process was run, if it
-	/// contains a `grin-wallet.toml` file.
+	/// contains a `mwc-wallet.toml` file.
 	/// 2) ~/.grin/<chaintype>/ otherwise
 	///
 	/// # Arguments
@@ -1322,7 +1322,7 @@ where
 		lc.set_top_level_directory(dir)
 	}
 
-	/// Create a `grin-wallet.toml` configuration file in the top-level directory for the
+	/// Create a `mwc-wallet.toml` configuration file in the top-level directory for the
 	/// specified chain type.
 	/// A custom [`WalletConfig`](../grin_wallet_config/types/struct.WalletConfig.html)
 	/// and/or grin `LoggingConfig` may optionally be provided, otherwise defaults will be used.
@@ -1378,7 +1378,7 @@ where
 		let lc = w_lock.lc_provider()?;
 		lc.create_config(
 			chain_type,
-			"grin-wallet.toml",
+			"mwc-wallet.toml",
 			wallet_config,
 			logging_config,
 		)
@@ -1390,7 +1390,7 @@ where
 	/// Paths in the configuration file will be updated to reflect the top level directory, so
 	/// path-related values in the optional configuration structs will be ignored.
 	///
-	/// The wallet files must not already exist, and ~The `grin-wallet.toml` file must exist
+	/// The wallet files must not already exist, and ~The `mwc-wallet.toml` file must exist
 	/// in the top level directory (can be created via a call to
 	/// [`create_config`](struct.Owner.html#method.create_config))
 	///

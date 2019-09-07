@@ -32,9 +32,9 @@ use crate::types::{ConfigError, GlobalWalletConfig, GlobalWalletConfigMembers};
 use crate::util::LoggingConfig;
 
 /// Wallet configuration file name
-pub const WALLET_CONFIG_FILE_NAME: &'static str = "grin-wallet.toml";
-const WALLET_LOG_FILE_NAME: &'static str = "grin-wallet.log";
-const GRIN_HOME: &'static str = ".grin";
+pub const WALLET_CONFIG_FILE_NAME: &'static str = "mwc-wallet.toml";
+const WALLET_LOG_FILE_NAME: &'static str = "mwc-wallet.log";
+const GRIN_HOME: &'static str = ".mwc";
 /// Wallet data directory
 pub const GRIN_WALLET_DIR: &'static str = "wallet_data";
 /// API secret

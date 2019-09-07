@@ -173,7 +173,7 @@ fn owner_v3_lifecycle() -> Result<(), grin_wallet_controller::Error> {
 		send_request_enc::<String>(1, 1, "http://127.0.0.1:43420/v3/owner", &req, &shared_key)?;
 	println!("RES 4: {:?}", res);
 	assert!(res.is_ok());
-	let pb = PathBuf::from(format!("{}/wallet1/grin-wallet.toml", test_dir));
+	let pb = PathBuf::from(format!("{}/wallet1/mwc-wallet.toml", test_dir));
 	assert!(pb.exists());
 
 	// 5) Try and perform an operation without having a wallet open
